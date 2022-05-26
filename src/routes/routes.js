@@ -1,5 +1,5 @@
 const express = require("express");
-const FuncionariosController = require("./controllers/funcionarios.js");
+const FuncionariosController = require("../controllers/FuncionariosController.js");
 
 const router = express.Router();
 
