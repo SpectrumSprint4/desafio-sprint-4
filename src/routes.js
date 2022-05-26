@@ -1,19 +1,10 @@
 const express = require("express");
-
-const Funcionarios = require("../src/models/Funcionarios");
+const FuncionariosController = require("./controllers/funcionarios.js");
 
 const router = express.Router();
 
-router.post("/employee", async (req, res) => {
-	try {
-		const funcionarios = await Funcionarios.create(req.body);
-		return res.send({ funcionarios });
+router
+	.get("/api/v1/employee", FuncionariosController.listarFuncionarios)
+	.post("/api/v1/employee", FuncionariosController.criarFuncionario);
 
-	}  catch (err) {
-		return res.status(400).send({ error: "Registration Failed!"});
-	}
-});
-
-module.exports = app => app.use("/api/v1/", router);
-
-
+module.exports = router;
