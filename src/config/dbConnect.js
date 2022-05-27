@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost:27017/teste");
+const user = "luiz";
+const senha = "Compass134";
+
+mongoose.connect(`mongodb+srv://${user}:${senha}@desafio-4.stdmzal.mongodb.net/?retryWrites=true&w=majority`);
 
 const db = mongoose.connection;
 
