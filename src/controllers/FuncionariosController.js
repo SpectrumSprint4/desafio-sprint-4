@@ -1,22 +1,22 @@
 const funcionarios = require("../models/Funcionarios.js");
 
 class FuncionariosController {
-	static listarFuncionarios(req, res) {
-		funcionarios.find((err, funcionarios ) => {
-			res.status(200).json(funcionarios);
-		});
+	static async listarFuncionarios(req, res) {
+		try {
+			const todosFuncionarios = await funcionarios.find();
+			res.status(200).send(todosFuncionarios);
+		} catch(error) {
+			res.status(error.status).send(error);
+		}
 	}
 
-	static criarFuncionario(req, res) {
-		const novofuncionario = new funcionarios (req.body);
-
-		novofuncionario.save((err) => {
-			if(err) {
-				res.status(500).json({message: `${err.message} - Falha ao cadrastar o funcionário `});
-			} else {
-				res.status(201).json(novofuncionario);
-			}
-		});
+	static async criarFuncionario(req, res) {
+		try {
+			await funcionarios.create(req.body);
+			res.status(201).end();
+		} catch(error) {
+			res.status(400).send(error);
+		}
 	}
 }
 

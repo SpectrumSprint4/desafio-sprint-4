@@ -1,9 +1,6 @@
 const mongoose = require("mongoose");
 
 const funcionariosSchema = new mongoose.Schema({
-	employee_id: {
-		type: String
-	},
 	name: {
 		type: String,
 		required: true
@@ -21,10 +18,10 @@ const funcionariosSchema = new mongoose.Schema({
 			message: "Office não condiz com os cargos"
 		}
 	},
-	numeroPaginas: {
+	/* 	numeroPaginas: {
 		type: Number,
 		required: true
-	},
+	}, */
 	birthday: {
 		type: Date,
 		required: true
@@ -32,6 +29,7 @@ const funcionariosSchema = new mongoose.Schema({
 	situation: {
 		type: String,
 		required: true,
+		default: "active",
 		enum: {
 			values: ["active", "disabled"],
 			message: "Situation deve ser active ou disabled"
