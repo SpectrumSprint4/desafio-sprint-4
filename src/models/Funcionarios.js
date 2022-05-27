@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 
 const funcionariosSchema = new mongoose.Schema({
+	employee_id: {
+		type: String
+	},
 	name: {
 		type: String,
 		required: true
@@ -18,10 +21,6 @@ const funcionariosSchema = new mongoose.Schema({
 			message: "Office não condiz com os cargos"
 		}
 	},
-	/* 	numeroPaginas: {
-		type: Number,
-		required: true
-	}, */
 	birthday: {
 		type: Date,
 		required: true
