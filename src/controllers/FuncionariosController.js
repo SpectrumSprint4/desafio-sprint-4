@@ -11,13 +11,18 @@ class FuncionariosController {
 		}
 	}
 
-	static async listarFuncionarioPorId(req, res) {
+	static async listarFuncionarioPorId(req, res, prox) {
 		const id = req.params.id;
 		try {
 			const funcionarioPorId = await funcionarios.findById(id);
+			if(funcionarioPorId == null) {
+				res.status(404).json([{message: `Este id: ${id} não é de nenhum funcionário cadastrado`}]);
+				return;
+			}
 			res.status(200).json(funcionarioPorId);
+			prox();
 		} catch(error) {
-			res.status(400).json({message: `Funcionário com o id ${id} não foi encontrado`});
+			res.status(400).json({message: `Este id: ${id} está fora do padrão do banco de dados`});
 		}
 	}	
 
@@ -43,14 +48,18 @@ class FuncionariosController {
 		}
 	}
 
-	static async apagaFuncionario(req, res) {
+	static async apagaFuncionario(req, res, prox) {
 		const id = req.params.id;
 		try {
-			await funcionarios.findByIdAndDelete(id);
+			const funcionarioPorId = await funcionarios.findByIdAndDelete(id);
+			if(funcionarioPorId == null) {
+				res.status(404).json([{message: `Este id: ${id} não é de nenhum funcionário cadastrado`}]);
+				return;
+			}
 			res.status(200).json({message: `Funcionário com o id ${id} foi apagado com sucesso`});
-			
+			prox();
 		} catch(error) {
-			res.status(400).json({message: `Funcionário com o id ${id} não foi encontrado`});
+			res.status(400).json({message: `Este id: ${id} está fora do padrão do banco de dados`});
 		}
 	}
 }
