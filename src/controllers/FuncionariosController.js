@@ -1,4 +1,5 @@
 const funcionarios = require("../models/Funcionarios.js");
+const moment = require("moment");
 
 class FuncionariosController {
 	static async listarFuncionarios(req, res) {
@@ -22,7 +23,9 @@ class FuncionariosController {
 
 	static async criarFuncionario(req, res) {
 		try {
-			await funcionarios.create(req.body);
+			const reqBody = req.body;
+			const birthday = moment(reqBody.birthday, "DD/MM/YYYY").format("YYYY/MM/DD");
+			await funcionarios.create({...reqBody, birthday});
 			res.status(201).json();
 		} catch(error) {
 			res.status(400).json(error);
