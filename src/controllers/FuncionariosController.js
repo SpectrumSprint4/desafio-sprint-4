@@ -20,8 +20,8 @@ class FuncionariosController {
 		}
 	}	
 
-	static async criarFuncionario(req, res) {
-		try {
+	static async criarFuncionario(req, res) {		
+		try {			
 			await funcionarios.create(req.body);
 			res.status(201).json();
 		} catch(error) {
