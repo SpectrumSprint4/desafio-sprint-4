@@ -11,21 +11,13 @@ const produtosSchema = new mongoose.Schema({
 		unique: true
 	},
 	price: {
-		type: parseFloat,
+		type: Number,
 		required: true,
 		unique: false
 	},
 	employee_id: {
 		type: String
-	},
-	createdAt: {
-		type: Date,
-		default: Date.now
-	},
-	updatedAt: {
-		type: Date,
-		default: Date.now
-	}
+	}	
 });
 
 const produtos = mongoose.model("Produtos", produtosSchema);
