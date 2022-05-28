@@ -14,11 +14,12 @@ class FuncionariosController {
 
 	static async listarFuncionarioPorQuery(req, res) {
 		try {
-			const queryParams = req.query;
-			const funcionarioPorQuery = await funcionarios.find(queryParams);
-			const query = funcionarioPorQuery[0];
-			formataCpf(funcionarioPorQuery);
-			if (query == null) {
+			const { name, cpf, office, situation, birthday } = req.query;
+			const nameSearch = new RegExp(name);
+
+			const funcionarioPorQuery = await funcionarios.find({ name: nameSearch });
+			const queryParams = funcionarioPorQuery[0];
+			if (queryParams == null) {
 				res.status(404).json([{
 					message: "Bad request", details: [{
 						message: "não foi possivel encontrar nenhuma informação com os dados inserirdos"
@@ -33,7 +34,6 @@ class FuncionariosController {
 		} catch (error) {
 			res.status(400).json(error);
 		}
-
 	}
 
 	static async listarFuncionarioPorId(req, res, prox) {
