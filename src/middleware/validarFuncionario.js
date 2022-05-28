@@ -4,7 +4,7 @@ const moment = require("moment");
 
 
 
-const authEmploer = joi.object({
+const authEmployer = joi.object({
 	name: joi.string()
 		.min(5)
 		.required(),
@@ -16,6 +16,13 @@ const authEmploer = joi.object({
 		.required()
 });
 
+const authEmployerUpdate = joi.object({
+	name: joi.string().min(5),
+	cpf: joi.string(),
+	office: joi.string(),
+	birthday: joi.string()
+});
+
 module.exports = async (req, res, next) => {
 	const reqBody = req.body;
 	const birthday = moment(reqBody.birthday, "DD/MM/YYYY").format("YYYY/MM/DD");
@@ -23,8 +30,15 @@ module.exports = async (req, res, next) => {
 		if (!validaData(birthday) || !validaCpf(reqBody.cpf)) {
 			throw new Error("Campos Invalidos");
 		}
-		await authEmploer.validateAsync({...reqBody, birthday});
-		next();
+		if(req.method == "POST") {
+			await authEmployer.validateAsync({...reqBody, birthday});
+			next();
+		}
+		if(req.method === "PUT") {
+			console.log(req.method);
+			await authEmployerUpdate.validateAsync({...reqBody, birthday});
+			next();
+		}
 	} catch(error) {
 		res.status(400).json(error.message);
 	}
