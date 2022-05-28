@@ -16,21 +16,98 @@ class FuncionariosController {
 		try {
 			const { name, cpf, office, situation, birthday } = req.query;
 			const nameSearch = new RegExp(name);
+			const officeSearch = new RegExp(office);
+			const cpfSearch = new RegExp(cpf);
+			const situationSearch = new RegExp(situation);
+			const birthdaySearch = new RegExp(birthday);
 
-			const funcionarioPorQuery = await funcionarios.find({ name: nameSearch });
-			const queryParams = funcionarioPorQuery[0];
-			if (queryParams == null) {
-				res.status(404).json([{
-					message: "Bad request", details: [{
-						message: "não foi possivel encontrar nenhuma informação com os dados inserirdos"
-					}]
-				}]);
-				return;
+			if(name) {
+				let funcionarioPorQuery = await funcionarios.find({ name: nameSearch });
+
+				const queryParams = funcionarioPorQuery[0];
+				if (queryParams == null) {
+					res.status(404).json([{
+						message: "Bad request", details: [{
+							message: "não foi possivel encontrar nenhuma informação com os dados inserirdos"
+						}]
+					}]);
+					return;
+				}
+				const employees = funcionarioPorQuery;
+				res.status(200).json({
+					employees,
+				});
+			} else if(office) {
+				let funcionarioPorQuery = await funcionarios.find({ office: officeSearch });
+
+				const queryParams = funcionarioPorQuery[0];
+				if (queryParams == null) {
+					res.status(404).json([{
+						message: "Bad request", details: [{
+							message: "não foi possivel encontrar nenhuma informação com os dados inserirdos"
+						}]
+					}]);
+					return;
+				}
+				const employees = funcionarioPorQuery;
+				res.status(200).json({
+					employees,
+				});
+
+			} else if(cpf) {
+				let funcionarioPorQuery = await funcionarios.find({ cpf: cpfSearch });
+
+				const queryParams = funcionarioPorQuery[0];
+				if (queryParams == null) {
+					res.status(404).json([{
+						message: "Bad request", details: [{
+							message: "não foi possivel encontrar nenhuma informação com os dados inserirdos"
+						}]
+					}]);
+					return;
+				}
+				const employees = funcionarioPorQuery;
+				res.status(200).json({
+					employees,
+				});
+
+			} else if(situation) {
+				let funcionarioPorQuery = await funcionarios.find({ situation: situationSearch });
+
+				const queryParams = funcionarioPorQuery[0];
+				if (queryParams == null) {
+					res.status(404).json([{
+						message: "Bad request", details: [{
+							message: "não foi possivel encontrar nenhuma informação com os dados inserirdos"
+						}]
+					}]);
+					return;
+				}
+				const employees = funcionarioPorQuery;
+				res.status(200).json({
+					employees,
+				});
+
+			} else if(birthday) {
+				let funcionarioPorQuery = await funcionarios.find({ birthday: birthdaySearch });
+
+				const queryParams = funcionarioPorQuery[0];
+				if (queryParams == null) {
+					res.status(404).json([{
+						message: "Bad request", details: [{
+							message: "não foi possivel encontrar nenhuma informação com os dados inserirdos"
+						}]
+					}]);
+					return;
+				}
+				const employees = funcionarioPorQuery;
+				res.status(200).json({
+					employees,
+				});
+
 			}
-			const employees = funcionarioPorQuery;
-			res.status(200).json({
-				employees,
-			});
+			
+			
 		} catch (error) {
 			res.status(400).json(error);
 		}
