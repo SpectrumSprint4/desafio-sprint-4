@@ -5,6 +5,7 @@ class FuncionariosController {
 	static async listarFuncionarios(req, res) {
 		try {
 			const todosFuncionarios = await funcionarios.find();
+			formataCpf(todosFuncionarios);
 			res.status(200).json(todosFuncionarios);
 		} catch (error) {
 			res.status(400).json(error);
@@ -16,6 +17,7 @@ class FuncionariosController {
 			const queryParams = req.query;
 			const funcionarioPorQuery = await funcionarios.find(queryParams);
 			const query = funcionarioPorQuery[0];
+			formataCpf(funcionarioPorQuery);
 			if (query == null) {
 				res.status(404).json([{
 					message: "Bad request", details: [{
@@ -42,6 +44,7 @@ class FuncionariosController {
 				res.status(404).json([{ message: `Este id: ${id} não é de nenhum funcionário cadastrado` }]);
 				return;
 			}
+			formataCpf(funcionarioPorId);
 			res.status(200).json(funcionarioPorId);
 			prox();
 		} catch (error) {
@@ -84,6 +87,20 @@ class FuncionariosController {
 		} catch (error) {
 			res.status(400).json({ message: `Este id: ${id} está fora do padrão do banco de dados` });
 		}
+	}
+}
+
+function formataCpf(funcionario) {
+	if(Array.isArray(funcionario)) {
+		const funcionarioFormatado = funcionario.map(teste => {
+			const cpf = teste.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3-$4");
+			teste.cpf = cpf;
+		});
+		return funcionarioFormatado;
+	} else {
+		const cpf = funcionario.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3-$4");
+		const funcionarioFormatado = funcionario.cpf = cpf;
+		return funcionarioFormatado;
 	}
 }
 
