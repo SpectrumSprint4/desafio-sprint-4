@@ -1,9 +1,6 @@
 const mongoose = require("mongoose");
 
 const produtosSchema = new mongoose.Schema({
-	employee_id: {
-		type: String
-	},
 	name: {
 		type: String,
 		required: true
@@ -14,9 +11,12 @@ const produtosSchema = new mongoose.Schema({
 		unique: true
 	},
 	price: {
-		type: String,
+		type: parseFloat,
 		required: true,
 		unique: false
+	},
+	employee_id: {
+		type: String
 	},
 	createdAt: {
 		type: Date,
