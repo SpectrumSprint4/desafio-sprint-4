@@ -21,15 +21,29 @@ class ProdutosController {
 		}
 	}	
 
-	static async criarProduto(req, res) {
-		try {
-			const reqBody = req.body;			
-			await produtos.create({...reqBody});
-			res.status(201).json();
-		} catch(error) {
-			res.status(400).json(error);
-		}
-	}	
+	static async criarProduto(req, res) {		
+		if ( !req.body.employee_id || typeof req.body.employee_id == "undefined" || req.body.employee_id == null ){
+			res.status(400).json("É necessário informar um ID de funcionário");						
+		} else {
+			try {
+				const reqBody = req.body;			
+				await produtos.create({...reqBody});
+				res.status(201).json();
+			} catch(error) {
+				res.status(400).json(error);
+				console.log(error);
+			}
+		}	
+
+	}
+	// 	try {
+	// 		const reqBody = req.body;			
+	// 		await produtos.create({...reqBody});
+	// 		res.status(201).json();
+	// 	} catch(error) {
+	// 		res.status(400).json(error);
+	// 	}
+	// }	
 }
 
 module.exports = ProdutosController;
