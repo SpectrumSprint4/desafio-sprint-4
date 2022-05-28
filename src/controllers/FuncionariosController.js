@@ -41,14 +41,18 @@ class FuncionariosController {
 		try {
 			const funcionarioPorId = await funcionarios.findById(id);
 			if (funcionarioPorId == null) {
-				res.status(404).json([{ message: `Este id: ${id} não é de nenhum funcionário cadastrado` }]);
+				res.status(404).json([{
+					message: "Bad request", details: [{
+						message: `Este id: ${id} não é de nenhum funcionário cadastrado`}] }]);
 				return;
 			}
 			formataCpf(funcionarioPorId);
 			res.status(200).json(funcionarioPorId);
 			prox();
 		} catch (error) {
-			res.status(400).json({ message: `Este id: ${id} está fora do padrão do banco de dados` });
+			res.status(400).json({ 
+				message: "Bad request", details: [{
+					message: `Este id: ${id} está fora do padrão do banco de dados`}] });
 		}
 	}
 
@@ -67,7 +71,9 @@ class FuncionariosController {
 		const id = req.params.id;
 		try {
 			await funcionarios.findByIdAndUpdate(id, { $set: req.body });
-			res.status(200).json({ message: "Dados do funcionário foi atualizado" });
+			res.status(200).json({
+				message: "Good request", details: [{
+					message:  "Dados do funcionário foi atualizado" }]});
 
 		} catch (error) {
 			res.status(400).json(error);
@@ -79,13 +85,19 @@ class FuncionariosController {
 		try {
 			const funcionarioPorId = await funcionarios.findByIdAndDelete(id);
 			if (funcionarioPorId == null) {
-				res.status(404).json([{ message: `Este id: ${id} não é de nenhum funcionário cadastrado` }]);
+				res.status(404).json([{
+					message: "Bad request", details: [{
+						message: `Este id: ${id} não é de nenhum funcionário cadastrado` }] }]);
 				return;
 			}
-			res.status(200).json({ message: `Funcionário com o id ${id} foi apagado com sucesso` });
+			res.status(204).json({
+				message: "Bad request", details: [{ 
+					message: `Funcionário com o id ${id} foi apagado com sucesso` }]});
 			prox();
 		} catch (error) {
-			res.status(400).json({ message: `Este id: ${id} está fora do padrão do banco de dados` });
+			res.status(400).json({ 
+				message: "Bad request", details: [{
+					message: `Este id: ${id} está fora do padrão do banco de dados` }]});
 		}
 	}
 }
