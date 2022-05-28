@@ -8,12 +8,10 @@ const produtosSchema = new mongoose.Schema({
 	category: {
 		type: String, 
 		required: true,
-		unique: false
 	},
 	price: {
 		type: Number,
 		required: true,
-		unique: false
 	},
 	employee_id: {
 		type: String

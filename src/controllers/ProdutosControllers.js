@@ -35,15 +35,7 @@ class ProdutosController {
 			}
 		}	
 
-	}
-	// 	try {
-	// 		const reqBody = req.body;			
-	// 		await produtos.create({...reqBody});
-	// 		res.status(201).json();
-	// 	} catch(error) {
-	// 		res.status(400).json(error);
-	// 	}
-	// }	
+	}	
 }
 
 module.exports = ProdutosController;
