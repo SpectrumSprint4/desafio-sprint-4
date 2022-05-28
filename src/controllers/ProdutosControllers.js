@@ -35,7 +35,6 @@ class ProdutosController {
 				res.status(201).json();
 			} catch(error) {
 				res.status(400).json(error);
-				console.log(error);
 			}
 		}	
 

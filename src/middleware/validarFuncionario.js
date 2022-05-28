@@ -1,26 +1,19 @@
 const joi = require("joi");
 const moment = require("moment");
 
-
-
-
 const authEmployer = joi.object({
-	name: joi.string()
-		.min(5)
-		.required(),
-	cpf: joi.string()
-		.required(),
-	office: joi.string()
-		.required(),
-	birthday: joi.string()
-		.required()
+	name: joi.string().min(5).required(),
+	cpf: joi.string().required(),
+	office: joi.string().required().valid("gerente", "caixa", "vendedor"),
+	birthday: joi.string().required()
 });
 
 const authEmployerUpdate = joi.object({
 	name: joi.string().min(5),
 	cpf: joi.string(),
-	office: joi.string(),
-	birthday: joi.string()
+	office: joi.string().valid("gerente", "caixa", "vendedor"),
+	birthday: joi.string(),
+	situation: joi.string().valid("active", "disabled")
 });
 
 module.exports = async (req, res, next) => {
@@ -35,7 +28,6 @@ module.exports = async (req, res, next) => {
 			next();
 		}
 		if(req.method === "PUT") {
-			console.log(req.method);
 			await authEmployerUpdate.validateAsync({...reqBody, birthday});
 			next();
 		}
@@ -55,6 +47,8 @@ function validaData(formatedDate) {
 
 
 function validaCpf(cpf) {
+	if(!cpf) return true;
+
 	let soma = 0;
 
 	if(cpf === "01234567890") return false;

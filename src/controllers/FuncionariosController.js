@@ -146,8 +146,14 @@ class FuncionariosController {
 
 	static async atualizaFuncionario(req, res) {
 		const id = req.params.id;
+		let reqBody = req.body;
+		if(reqBody.birthday) {
+			const birthday = moment(reqBody.birthday, "DD/MM/YYYY").format("YYYY/MM/DD");
+			reqBody = {...reqBody, birthday};
+		}
+		
 		try {
-			await funcionarios.findByIdAndUpdate(id, { $set: req.body });
+			await funcionarios.findByIdAndUpdate(id, { $set: reqBody });
 			res.status(200).json({
 				message: "Good request", details: [{
 					message:  "Dados do funcionário foi atualizado" }]});
