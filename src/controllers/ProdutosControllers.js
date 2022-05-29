@@ -4,21 +4,26 @@ const produtos = require("../models/Produtos");
 
 class ProdutosController {
 	static async listarProdutos(req, res) {
-		try {
-			const todosProdutos = await produtos.find();
-			res.status(200).json(todosProdutos);
-		} catch(error) {
-			res.status(400).json(error);
-		}
-	}
+		const { min_price, max_price } = req.body;
+		const { name } = req.query;
+		const nameSearch = new RegExp(name);
 
-	static async listarProdutoPorName(req, res) {
-		const name = req.params.name;
+		console.log(min_price, max_price);
+
 		try {
-			const produtoPorName = await produtos.findByName(name);
-			res.status(200).json(produtoPorName);
-		} catch(error) {
-			res.status(400).json({message: `Produto com o nome de ${name} não foi encontrado`});
+			if (name) {
+				const produtoPorName = await produtos.find({ name: nameSearch });
+				res.status(200).json(produtoPorName);
+			} else if (min_price, max_price) {
+				const produtoPorPreco = await produtos.find({ price: { $gte: min_price, $lte: max_price } });
+				console.log(produtoPorPreco);
+				res.status(200).json(produtoPorPreco);
+			} else {
+				const todosProdutos = await produtos.find();
+				res.status(200).json(todosProdutos);
+			}
+		} catch (error) {
+			res.status(400).json(error);
 		}
 	}	
 
