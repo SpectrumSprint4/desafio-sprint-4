@@ -1,5 +1,6 @@
 const joi = require("joi");
 const moment = require("moment");
+const CampoInvalido = require("../errors/CampoInvalido.js");
 const SituationErro = require("../errors/SituationErro.js");
 
 const authEmployer = joi.object({
@@ -20,9 +21,13 @@ const authEmployerUpdate = joi.object({
 module.exports = async (req, res, next) => {
 	const reqBody = req.body;
 	const birthday = moment(reqBody.birthday, "DD/MM/YYYY").format("YYYY/MM/DD");
+	let campos = ["cpf", "birthday"];
 	try {
-		if (!validaData(birthday) || !validaCpf(reqBody.cpf)) {
-			throw new Error("Campos Invalidos");
+		if (!validaData(birthday)) {
+			throw new CampoInvalido(campos[1]);
+		}
+		if(!validaCpf(reqBody.cpf)) {
+			throw new CampoInvalido(campos[0]);
 		}
 		if(req.method == "POST") {
 			await authEmployer.validateAsync({...reqBody, birthday});
