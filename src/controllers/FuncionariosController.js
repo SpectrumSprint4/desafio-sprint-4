@@ -82,7 +82,7 @@ class FuncionariosController {
 				message: "Good request", details: [{
 					message:  "Dados do funcionário foi atualizado" }]});
 		} catch (error) {
-			res.status(404).json({ 
+			res.status(400).json({ 
 				message: "Bad request", details: [{
 					message: `Este id: ${id} está fora do padrão do banco de dados` }]});
 		}
