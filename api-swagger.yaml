@@ -1,0 +1,219 @@
+openapi: '3.0.3'
+info:
+  title: API de gerenciamento empresarial
+  description: API para gerenciar funcionarios e produtos de uma empresa.
+  version: 1.0.0
+externalDocs:
+  description: GitHub
+  url: https://github.com/SpectrumSprint4/desafio-sprint-4/
+
+components:
+  schemas:
+    Funcionarios:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 5
+        cpf:
+          type: string
+          minLength: 11
+          maxLength: 11
+        office:
+          type: string
+          enum: 
+          - "Gerente"
+          - "Vendedor"
+          - "Caixa"
+        birthday:
+          type: string
+          format: date
+        situation:
+          type: string
+          default: "active"
+          enum: 
+          - "active"
+          - "disable"
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
+    Produtos:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        category:
+          type: string
+        price:
+          type: number
+        employee_id:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
+          
+paths:
+  /api/v1/employee:
+    get:
+      summary: Busca todos os funcionarios
+      tags: ["Funcionarios"]
+      parameters: 
+        - in: query
+          name: name
+          schema:
+            type: string
+        - in: query
+          name: cpf
+          schema:
+            type: string
+        - in: query
+          name: office
+          schema:
+            type: string
+            enum: 
+            - "gerente"
+            - "caixa"
+            - "vendedor"
+        - in: query
+          name: situation
+          schema:
+            type: string
+            enum: 
+            - "active"
+            - "disabled"
+      responses:
+        200:
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Funcionarios"
+        400:
+          description: Bad Request
+    post:
+      summary: Cadastra novo funcionario
+      tags: ["Funcionarios"]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                cpf:
+                  type: string
+                office:
+                  type: string
+                  enum: 
+                    - "Gerente"
+                    - "Vendedor"
+                    - "Caixa"
+                birthday:
+                  type: string
+                  format: date
+              required: 
+                - "name"
+                - "cpf"
+                - "office"
+                - "birthday"
+      responses:
+        201:
+          description: Created
+        400:
+          description: Bad Request
+  /api/v1/emplyee/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+    get:
+      summary: Busca um funcionario pelo ID
+      tags: ["Funcionarios"]
+      responses:
+        200:
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Funcionarios"
+        400:
+          description: Bad Request
+    put:
+      summary: Atualiza informações de um funcionario
+      tags: ["Funcionarios"]
+      responses:
+        200:
+          description: Sucesso. Dados do funcionario foram atualizados
+        400:
+          description: Bad Request
+    delete:
+      summary: Delata funcionario pelo ID
+      tags: ["Funcionarios"]
+      responses:
+        204:
+          description: Funcionario deletado com sucesso
+        400: 
+          description: Bad Request. O ID está fora do padrão
+        404:
+          description: Not Found. ID não encontrado
+  /api/v1/product:
+    get:
+      summary: Lista todos os Produtos cadastrados
+      tags: ["Produtos"]
+      parameters: 
+      - in: query
+        name: name
+        schema:
+          type: string
+      - in: query
+        name: category
+        schema:
+          type: string
+      responses:
+        200:
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Produtos"
+        400:
+          description: Bad Request
+    post:
+      summary: Cadastra novo produto
+      tags: ["Produtos"]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                category:
+                  type: string
+                price:
+                  type: number
+                employee_id:
+                  type: string
+                  format: uuid
+      responses:
+        201:
+          description: Produto Cadastrado
+        400:
+          description: Bad Request     
