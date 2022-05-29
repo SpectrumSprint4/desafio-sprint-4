@@ -14,7 +14,9 @@ const produtosSchema = new mongoose.Schema({
 		required: true,
 	},
 	employee_id: {
-		type: String
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "Funcionarios",
+		require: true
 	}	
 });
 
