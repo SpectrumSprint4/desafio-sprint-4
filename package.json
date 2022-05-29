@@ -8,7 +8,7 @@
     "test": "echo \"Erroo: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Arthur Barros, Luiz Boldrini, Felix Candido, Fernando Calisto",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^8.16.0",
