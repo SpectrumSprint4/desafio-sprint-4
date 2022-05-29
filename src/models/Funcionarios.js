@@ -1,9 +1,6 @@
 const mongoose = require("mongoose");
 
 const funcionariosSchema = new mongoose.Schema({
-	employee_id: {
-		type: String
-	},
 	name: {
 		type: String,
 		required: true
@@ -33,16 +30,10 @@ const funcionariosSchema = new mongoose.Schema({
 			values: ["active", "deactivate"],
 			message: "Situation deve ser active ou deactivate"
 		}
-	},
-	createdAt: {
-		type: Date,
-		default: Date.now
-	},
-	updatedAt: {
-		type: Date,
-		default: Date.now
 	}
-});
+}, 
+{timestamps: true}
+);
 
 const funcionarios = mongoose.model("Funcionarios", funcionariosSchema);
 

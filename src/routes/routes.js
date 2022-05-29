@@ -17,9 +17,4 @@ router
 	.get("/api/v1/product", ProdutosController.listarProdutoPorName)
 	.post("/api/v1/product",validarProduto, ProdutosController.criarProduto);
 
-	
-
-
-
-
 module.exports = router;
