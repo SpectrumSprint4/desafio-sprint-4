@@ -1,5 +1,6 @@
 const joi = require("joi");
 const moment = require("moment");
+const SituationErro = require("../errors/SituationErro.js");
 
 const authEmployer = joi.object({
 	name: joi.string().min(5).required(),
@@ -13,7 +14,7 @@ const authEmployerUpdate = joi.object({
 	cpf: joi.string(),
 	office: joi.string().valid("gerente", "caixa", "vendedor"),
 	birthday: joi.string(),
-	situation: joi.string().valid("active", "deactivate")
+	situation: joi.string().valid("active", "deactivate").error(new SituationErro)
 });
 
 module.exports = async (req, res, next) => {
