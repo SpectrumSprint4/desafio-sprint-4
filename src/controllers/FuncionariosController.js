@@ -111,12 +111,15 @@ class FuncionariosController {
 			reqBody = {...reqBody, birthday};
 		}
 		try {
-			await funcionarios.findByIdAndUpdate(id, { $set: reqBody });
+			const funcionario = await funcionarios.findByIdAndUpdate(id, { $set: reqBody });
+			if (funcionario == null) {
+				throw new NotFound(id);
+			}
 			res.status(200).json({
 				message: "Good request", details: [{
 					message:  "Dados do funcionário foi atualizado" }]});
 		} catch (error) {
-			res.status(400).json(error);
+			res.status(404).json(error);
 		}
 	}
 
