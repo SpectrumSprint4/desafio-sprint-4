@@ -15,62 +15,27 @@ class FuncionariosController {
 
 	static async listarFuncionarioPorQuery(req, res) {
 		try {
-			const { name, cpf, office, situation, birthday } = req.query;
+			const { name } = req.query;
 			const nameSearch = new RegExp(name);
-			const officeSearch = new RegExp(office);
-			const cpfSearch = new RegExp(cpf);
-			const situationSearch = new RegExp(situation);
-			const birthdaySearch = new RegExp(birthday);
+			const allSearch = req.query;
 
-			if(name) {
+			if (name) {
 				let funcionarioPorQuery = await funcionarios.find({ name: nameSearch });
-
 				const queryParams = funcionarioPorQuery[0];
 				if (queryParams == null) {
 					throw new NotFound(name);
 				}
 				const employees = funcionarioPorQuery;
-				res.status(200).json({employees});
-			} 
-			else if(office) {
-				let funcionarioPorQuery = await funcionarios.find({ office: officeSearch });
+				res.status(200).json({ employees });
+			} else {
+				let funcionarioPorQuery = await funcionarios.find(allSearch);
 
 				const queryParams = funcionarioPorQuery[0];
 				if (queryParams == null) {
-					throw new NotFound(office);
+					throw new NotFound(allSearch);
 				}
 				const employees = funcionarioPorQuery;
-				res.status(200).json({employees});
-			} 
-			else if(cpf) {
-				let funcionarioPorQuery = await funcionarios.find({ cpf: cpfSearch });
-
-				const queryParams = funcionarioPorQuery[0];
-				if (queryParams == null) {
-					throw new NotFound(cpf);
-				}
-				const employees = funcionarioPorQuery;
-				res.status(200).json({employees});
-			} 
-			else if(situation) {
-				let funcionarioPorQuery = await funcionarios.find({ situation: situationSearch });
-
-				const queryParams = funcionarioPorQuery[0];
-				if (queryParams == null) {
-					throw new NotFound(situation);
-				}
-				const employees = funcionarioPorQuery;
-				res.status(200).json({employees});
-			} 
-			else if(birthday) {
-				let funcionarioPorQuery = await funcionarios.find({ birthday: birthdaySearch });
-
-				const queryParams = funcionarioPorQuery[0];
-				if (queryParams == null) {
-					throw new NotFound(birthday);
-				}
-				const employees = funcionarioPorQuery;
-				res.status(200).json({employees});
+				res.status(200).json({ employees });
 			}
 		} catch (error) {
 			res.status(error.status).json(error);
