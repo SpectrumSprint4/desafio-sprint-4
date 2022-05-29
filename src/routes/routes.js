@@ -7,7 +7,6 @@ const validarProduto = require("../middleware/validarProduto.js");
 const router = express.Router();
 
 router
-	.get("/api/v1/employee", FuncionariosController.listarFuncionarioPorQuery)
 	.get("/api/v1/employee", FuncionariosController.listarFuncionarios)
 	.get("/api/v1/employee/:id", FuncionariosController.listarFuncionarioPorId)
 	.post("/api/v1/employee", validarFuncionario, FuncionariosController.criarFuncionario)

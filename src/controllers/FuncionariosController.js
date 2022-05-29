@@ -5,22 +5,11 @@ const NotFound = require("../errors/NotFound.js");
 class FuncionariosController {
 	static async listarFuncionarios(req, res) {
 		try {
-			const todosFuncionarios = await funcionarios.find();
-			formataCpf(todosFuncionarios);
-			res.status(200).json(todosFuncionarios);
-		} catch (error) {
-			res.status(400).json(error);
-		}
-	}
-
-	static async listarFuncionarioPorQuery(req, res) {
-		try {
 			const { name } = req.query;
 			const nameSearch = new RegExp(name);
 			const allSearch = req.query;
-
 			if (name) {
-				let funcionarioPorQuery = await funcionarios.find({ name: nameSearch });
+				let funcionarioPorQuery = await funcionarios.find({name: nameSearch});
 				const queryParams = funcionarioPorQuery[0];
 				if (queryParams == null) {
 					throw new NotFound(name);
@@ -38,7 +27,7 @@ class FuncionariosController {
 				res.status(200).json({ employees });
 			}
 		} catch (error) {
-			res.status(error.status).json(error);
+			res.status(404).json(error);
 		}
 	}
 
