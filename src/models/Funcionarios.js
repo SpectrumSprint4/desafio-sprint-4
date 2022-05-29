@@ -30,8 +30,8 @@ const funcionariosSchema = new mongoose.Schema({
 		required: true,
 		default: "active",
 		enum: {
-			values: ["active", "disabled"],
-			message: "Situation deve ser active ou disabled"
+			values: ["active", "deactivate"],
+			message: "Situation deve ser active ou deactivate"
 		}
 	},
 	createdAt: {

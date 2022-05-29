@@ -13,7 +13,7 @@ const authEmployerUpdate = joi.object({
 	cpf: joi.string(),
 	office: joi.string().valid("gerente", "caixa", "vendedor"),
 	birthday: joi.string(),
-	situation: joi.string().valid("active", "disabled")
+	situation: joi.string().valid("active", "deactivate")
 });
 
 module.exports = async (req, res, next) => {
