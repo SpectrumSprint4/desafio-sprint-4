@@ -159,6 +159,16 @@ npm start
   }]
 ```
 
+- Exemplo de como buscar por preço no body da requisição: 
+- obs: nesta requisição, os parametros min e max são obrigatórios <br>
+``/api/v1/product``
+```
+{
+  "min_price": value
+  "max_price": value
+}
+```
+
 ## Tarefas em aberto
 
 - [ ] Paginação
