@@ -1,6 +1,7 @@
 const funcionarios = require("../models/Funcionarios.js");
 const moment = require("moment");
 const NotFound = require("../errors/NotFound.js");
+// const IdForaDoPadrao = require("../errors/IdForaDoPadrao.js");
 
 class FuncionariosController {
 	static async listarFuncionarios(req, res) {
@@ -42,18 +43,23 @@ class FuncionariosController {
 		}
 	}
 
-	static async listarFuncionarioPorId(req, res, next) {
+	static async listarFuncionarioPorId(req, res, prox) {
 		const id = req.params.id;
 		try {
 			const funcionarioPorId = await funcionarios.findById(id);
 			if (funcionarioPorId == null) {
-				throw new NotFound(id);
+				res.status(404).json([{
+					message: "Bad request", details: [{
+						message: `Este id: ${id} não é de nenhum funcionário cadastrado`}] }]);
+				return;
 			}
 			formataCpf(funcionarioPorId);
 			res.status(200).json(funcionarioPorId);
-			next();
+			prox();
 		} catch (error) {
-			res.status(error.status).json(error);
+			res.status(400).json({ 
+				message: "Bad request", details: [{
+					message: `Este id: ${id} está fora do padrão do banco de dados`}] });
 		}
 	}
 
@@ -78,29 +84,39 @@ class FuncionariosController {
 		try {
 			const funcionario = await funcionarios.findByIdAndUpdate(id, { $set: reqBody });
 			if (funcionario == null) {
-				throw new NotFound(id);
+				res.status(404).json([{
+					message: "Bad request", details: [{
+						message: `Este id: ${id} não é de nenhum funcionário cadastrado` }] }]);
+				return;
 			}
 			res.status(200).json({
 				message: "Good request", details: [{
 					message:  "Dados do funcionário foi atualizado" }]});
 		} catch (error) {
-			res.status(404).json(error);
+			res.status(404).json({ 
+				message: "Bad request", details: [{
+					message: `Este id: ${id} está fora do padrão do banco de dados` }]});
 		}
 	}
 
-	static async apagaFuncionario(req, res, next) {
+	static async apagaFuncionario(req, res, prox) {
 		const id = req.params.id;
 		try {
 			const funcionarioPorId = await funcionarios.findByIdAndDelete(id);
 			if (funcionarioPorId == null) {
-				throw new NotFound(id);
+				res.status(404).json([{
+					message: "Bad request", details: [{
+						message: `Este id: ${id} não é de nenhum funcionário cadastrado` }] }]);
+				return;
 			}
 			res.status(204).json({
-				message: "Good request", details: [{ 
+				message: "Bad request", details: [{ 
 					message: `Funcionário com o id ${id} foi apagado com sucesso` }]});
-			next();
+			prox();
 		} catch (error) {
-			res.status(error.status).json(error);
+			res.status(400).json({ 
+				message: "Bad request", details: [{
+					message: `Este id: ${id} está fora do padrão do banco de dados` }]});
 		}
 	}
 }

@@ -1,21 +1,21 @@
 const joi = require("joi");
 const moment = require("moment");
 const CampoInvalido = require("../errors/CampoInvalido.js");
-const SituationErro = require("../errors/SituationErro.js");
+const EnumErro = require("../errors/EnumErro.js");
+const NameErro = require("../errors/NameErro.js");
 
 const authEmployer = joi.object({
-	name: joi.string().min(5).required(),
+	name: joi.string().min(5).required().error(new NameErro),
 	cpf: joi.string().required(),
-	office: joi.string().required().valid("gerente", "caixa", "vendedor"),
+	office: joi.string().required().valid("gerente", "caixa", "vendedor").error(new EnumErro("gerente, caixa ou vendedor")),
 	birthday: joi.string().required()
 });
-
 const authEmployerUpdate = joi.object({
-	name: joi.string().min(5),
+	name: joi.string().min(5).error(new NameErro),
 	cpf: joi.string(),
-	office: joi.string().valid("gerente", "caixa", "vendedor"),
+	office: joi.string().valid("gerente", "caixa", "vendedor").error(new EnumErro("gerente, caixa ou vendedor")),
 	birthday: joi.string(),
-	situation: joi.string().valid("active", "deactivate").error(new SituationErro)
+	situation: joi.string().valid("active", "deactivate").error(new EnumErro("active ou deactive"))
 });
 
 module.exports = async (req, res, next) => {
