@@ -1,3 +1,4 @@
+const BadRequest = require("../errors/BadRequest");
 const funcionarios = require("../models/Funcionarios");
 const produtos = require("../models/Produtos");
 
@@ -26,20 +27,13 @@ class ProdutosController {
 			const reqBody = req.body;
 			const funcionario = await buscaFuncionario(reqBody.employee_id);
 			if(funcionario.situation != "active" || funcionario.office != "gerente") {
-				throw new Error([{
-					message: "Bad request",
-					details: [{
-						message: `O Funcionario ${funcionario.name} não possui permissão para cadastrar produtos`
-					}]
-				}]);
+				throw new BadRequest("de gerente ativo");
 			}
 			await produtos.create({...reqBody});
 			res.status(201).end();
 		} catch(error) {
 			res.status(400).json(error);
 		}
-		
-
 	}	
 }
 
