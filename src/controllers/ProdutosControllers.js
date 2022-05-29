@@ -8,15 +8,12 @@ class ProdutosController {
 		const { name } = req.query;
 		const nameSearch = new RegExp(name);
 
-		console.log(min_price, max_price);
-
 		try {
 			if (name) {
 				const produtoPorName = await produtos.find({ name: nameSearch });
 				res.status(200).json(produtoPorName);
 			} else if (min_price, max_price) {
 				const produtoPorPreco = await produtos.find({ price: { $gte: min_price, $lte: max_price } });
-				console.log(produtoPorPreco);
 				res.status(200).json(produtoPorPreco);
 			} else {
 				const todosProdutos = await produtos.find();
