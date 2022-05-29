@@ -22,21 +22,23 @@ class ProdutosController {
 	}	
 
 	static async criarProduto(req, res) {		
-		if ( !req.body.employee_id || typeof req.body.employee_id == "undefined" || req.body.employee_id == null ){
-			res.status(400).json("É necessário informar um ID de funcionário");						
-		} else {
-			try {
-				const reqBody = req.body;
-				const funcionario = await buscaFuncionario(reqBody.employee_id);
-				if(funcionario.situation != "active" || funcionario.office != "gerente") {
-					throw new Error({message: `O Funcionario ${funcionario.name} não possui permissão para cadastrar produto`});
-				}
-				await produtos.create({...reqBody});
-				res.status(201).json();
-			} catch(error) {
-				res.status(400).json(error);
+		try {
+			const reqBody = req.body;
+			const funcionario = await buscaFuncionario(reqBody.employee_id);
+			if(funcionario.situation != "active" || funcionario.office != "gerente") {
+				throw new Error([{
+					message: "Bad request",
+					details: [{
+						message: `O Funcionario ${funcionario.name} não possui permissão para cadastrar produtos`
+					}]
+				}]);
 			}
-		}	
+			await produtos.create({...reqBody});
+			res.status(201).end();
+		} catch(error) {
+			res.status(400).json(error);
+		}
+		
 
 	}	
 }
