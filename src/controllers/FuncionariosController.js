@@ -10,21 +10,20 @@ class FuncionariosController {
 			const nameSearch = new RegExp(name);
 			const allSearch = req.query;
 			if (name) {
-				let funcionarioPorQuery = await funcionarios.find({name: nameSearch});
-				const queryParams = funcionarioPorQuery[0];
-				if (queryParams == null) {
+				let funcionarioPorQuery = funcionarios.find({ name: nameSearch });
+				let paginar = await funcionarios.paginate(funcionarioPorQuery);
+				if (paginar.totalDocs == 0) {
 					throw new NotFound(name);
 				}
-				const employees = funcionarioPorQuery;
-				res.status(200).json({ employees });
+				const employee = paginar;
+				res.status(200).json({ employee });
 			} else {
-				let funcionarioPorQuery = await funcionarios.find(allSearch);
-
-				const queryParams = funcionarioPorQuery[0];
-				if (queryParams == null) {
+				let funcionarioPorQuery = funcionarios.find(allSearch);
+				let paginar = await funcionarios.paginate(funcionarioPorQuery);
+				if (paginar.totalDocs == 0) {
 					throw new NotFound(allSearch);
 				}
-				const employees = funcionarioPorQuery;
+				const employees = paginar;
 				res.status(200).json({ employees });
 			}
 		} catch (error) {
