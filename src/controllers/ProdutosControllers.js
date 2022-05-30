@@ -10,14 +10,23 @@ class ProdutosController {
 
 		try {
 			if (name) {
-				const produtoPorName = await produtos.find({ name: nameSearch });
-				res.status(200).json(produtoPorName);
+				let produtoPorName = produtos.find({ name: nameSearch });
+				const paginar = await produtos.paginate(produtoPorName);
+				if (paginar.totalDocs == 0) {
+					throw new NotFound(name);
+				}
+				res.status(200).json(paginar);
 			} else if (min_price, max_price) {
-				const produtoPorPreco = await produtos.find({ price: { $gte: min_price, $lte: max_price } });
-				res.status(200).json(produtoPorPreco);
+				let produtoPorPreco = produtos.find({ price: { $gte: min_price, $lte: max_price } });
+				const paginar = await produtos.paginate(produtoPorPreco);
+				if (paginar.totalDocs == 0) {
+					throw new NotFound(min_price, max_price);
+				}
+				res.status(200).json(paginar);
 			} else {
-				const todosProdutos = await produtos.find();
-				res.status(200).json(todosProdutos);
+				let todosProdutos = produtos.find();
+				const paginar = await produtos.paginate(todosProdutos);
+				res.status(200).json(paginar);
 			}
 		} catch (error) {
 			res.status(400).json(error);
