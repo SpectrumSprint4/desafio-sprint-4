@@ -1,7 +1,6 @@
 const funcionarios = require("../models/Funcionarios.js");
 const moment = require("moment");
 const NotFound = require("../errors/NotFound.js");
-// const IdForaDoPadrao = require("../errors/IdForaDoPadrao.js");
 
 class FuncionariosController {
 	static async listarFuncionarios(req, res) {

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 const funcionariosSchema = new mongoose.Schema({
 	name: {
@@ -34,6 +35,8 @@ const funcionariosSchema = new mongoose.Schema({
 }, 
 {timestamps: true}
 );
+
+funcionariosSchema.plugin(mongoosePaginate);
 
 const funcionarios = mongoose.model("Funcionarios", funcionariosSchema);
 

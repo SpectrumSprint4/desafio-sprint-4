@@ -61,7 +61,7 @@ npm start
 
 ### Ferramentas :wrench:
 
-- [MongoDB](https://www.mongodb.com/pt-br)
+- [MongoDB Atlas](https://www.mongodb.com/atlas/database)
 - [NodeJs](https://nodejs.org/en/)
 - [Express](https://expressjs.com/pt-br/)
 - [Joi](https://joi.dev/)
