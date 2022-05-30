@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 const produtosSchema = new mongoose.Schema({
 	name: {
@@ -6,7 +7,7 @@ const produtosSchema = new mongoose.Schema({
 		required: true
 	},
 	category: {
-		type: String, 
+		type: String,
 		required: true,
 	},
 	price: {
@@ -17,9 +18,10 @@ const produtosSchema = new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "Funcionarios",
 		require: true
-	}	
+	}
 });
 
+produtosSchema.plugin(mongoosePaginate);
 const produtos = mongoose.model("Produtos", produtosSchema);
 
 module.exports = produtos;
